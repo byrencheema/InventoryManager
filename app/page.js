@@ -86,6 +86,12 @@ export default function Home() {
 
   return (
     <Box width="100vw" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap={4} sx={{ bgcolor: "#f5f5f5", padding: 4 }}>
+      <Typography variant="h2" component="h1" color="primary.main" gutterBottom>
+        Simple Inventory Manager
+      </Typography>
+      <Typography variant="body1" color="textSecondary" align="center" gutterBottom>
+        Keep track of your items with this simple inventory manager.
+      </Typography>
       <Modal open={open} onClose={handleClose}>
         <Box position="absolute" top='50%' left='50%' bgcolor="white" p={4} borderRadius={2} width={400} boxShadow={3} sx={{ transform: 'translate(-50%, -50%)' }}>
           <Typography variant="h6" sx={{ mb: 2 }}>Add Item</Typography>
@@ -99,9 +105,9 @@ export default function Home() {
         </Box>
       </Modal>
       <Button variant="contained" color="primary" onClick={handleOpen}>Add New Item</Button>
-      <TextField 
-        variant="outlined" 
-        placeholder="Search inventory..." 
+      <TextField
+        variant="outlined"
+        placeholder="Search inventory..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         sx={{ width: '800px', mb: 4 }}
