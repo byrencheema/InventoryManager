@@ -1,7 +1,8 @@
 'use client';
 import { useState, useEffect } from "react";
 import { firestore } from "../firebase";
-import { Box, Modal, Typography, Stack, TextField, Button } from "@mui/material";
+import { Box, Modal, Typography, Stack, TextField, Button, Paper, IconButton } from "@mui/material";
+import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import { collection, setDoc, getDocs, query, getDoc, doc, deleteDoc } from "firebase/firestore";
 
 export default function Home() {
@@ -84,48 +85,50 @@ export default function Home() {
   }, [searchTerm, inventory]);
 
   return (
-    <Box width="100vw" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap={2}>
+    <Box width="100vw" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap={4} sx={{ bgcolor: "#f5f5f5", padding: 4 }}>
       <Modal open={open} onClose={handleClose}>
-        <Box position="absolute" top='50%' left='50%' bgcolor="white" p={2} borderRadius={2} width={400} border="2px solid #000" display="flex" flexDirection={"column"} gap={3} sx={{ transform: 'translate(-50%, -50%)' }}>
-          <Typography variant="h6">Add Item</Typography>
+        <Box position="absolute" top='50%' left='50%' bgcolor="white" p={4} borderRadius={2} width={400} boxShadow={3} sx={{ transform: 'translate(-50%, -50%)' }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>Add Item</Typography>
           <Stack width="100%" direction="row" spacing={2}>
-            <TextField variant="outlined" fullWidth value={itemName} onChange={(e) => { setItemName(e.target.value) }} ></TextField>
-            <Button variant="outlined" onClick={() => {
+            <TextField variant="outlined" label="Item Name" fullWidth value={itemName} onChange={(e) => { setItemName(e.target.value) }} />
+            <Button variant="contained" color="primary" onClick={() => {
               addItem();
               handleClose();
             }}>Add</Button>
           </Stack>
         </Box>
       </Modal>
-      <Button variant="contained" onClick={handleOpen}>Add Item</Button>
+      <Button variant="contained" color="primary" onClick={handleOpen}>Add New Item</Button>
       <TextField 
         variant="outlined" 
         placeholder="Search inventory..." 
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        sx={{ marginBottom: 2, width: '800px' }}
+        sx={{ width: '800px', mb: 4 }}
       />
-      <Box border="1px solid #333">
-        <Box width="800px" height="100px" bgcolor="#9fa2c0" display={"flex"} alignItems={"center"} justifyContent={"center"}>
-          <Typography variant="h2" color="#333">Inventory</Typography>
+      <Paper sx={{ width: '800px', maxHeight: '60vh', overflow: 'auto', padding: 2, boxShadow: 3 }}>
+        <Box display={"flex"} justifyContent={"center"} alignItems={"center"} mb={2}>
+          <Typography variant="h4" color="#333">Inventory</Typography>
         </Box>
-      </Box>
-      <Stack width={"800px"} height="300px" direction={"column"} spacing={2} overflow={"auto"}>
-        {
-          filteredInventory.map((item) => (
-            <Box key={item.name} width="100%" height="50px" bgcolor="#f3f4f6" display="flex" alignItems="center" justifyContent="space-between" p={2}>
-              <Box display="flex" flexGrow={1} alignItems="center">
-                <Typography variant="h5" sx={{ flex: 1 }}>{item.name}</Typography>
+        <Stack direction="column" spacing={2}>
+          {
+            filteredInventory.map((item) => (
+              <Box key={item.name} display="flex" alignItems="center" justifyContent="space-between" p={2} sx={{ bgcolor: "#e3e3e3", borderRadius: 1 }}>
+                <Typography variant="h6" sx={{ flexGrow: 1 }}>{item.name}</Typography>
+                <Typography variant="h6" sx={{ width: '100px', textAlign: 'left', mr: 2 }}>{item.quantity}</Typography>
+                <Box display="flex" gap={1}>
+                  <IconButton color="secondary" onClick={() => { removeItem(item) }}>
+                    <RemoveCircle />
+                  </IconButton>
+                  <IconButton color="primary" onClick={() => { addItem(item) }}>
+                    <AddCircle />
+                  </IconButton>
+                </Box>
               </Box>
-              <Typography variant="h5" sx={{ width: '100px', textAlign: 'left' }}>{item.quantity}</Typography>
-              <Box display="flex" gap={2}>
-                <Button variant="outlined" onClick={() => { removeItem(item) }}>Remove</Button>
-                <Button variant="outlined" onClick={() => { addItem(item) }}>Add</Button>
-              </Box>
-            </Box>
-          ))
-        }
-      </Stack>
+            ))
+          }
+        </Stack>
+      </Paper>
     </Box>
   );
 }
