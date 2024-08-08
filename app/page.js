@@ -1,5 +1,4 @@
 'use client';
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { firestore } from "../firebase";
 import { Box, Modal, Typography, Stack, TextField, Button } from "@mui/material";
@@ -71,7 +70,7 @@ export default function Home() {
   return (
     <Box width="100vw" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap={2}>
       <Modal open={open} onClose={handleClose}>
-        <Box position="absolute" top='50%' left='50%' bgcolor="white" p={2} borderRadius={2} width={400} border="2px solid #00)000" p={4} display="flex" flexDirection={"column"} gap={3} sx={{ transform: 'translate(-50%, -50%)' }}>
+        <Box position="absolute" top='50%' left='50%' bgcolor="white" p={2} borderRadius={2} width={400} border="2px solid #00)000" display="flex" flexDirection={"column"} gap={3} sx={{ transform: 'translate(-50%, -50%)' }}>
           <Typography variant="h6">Add Item</Typography>
           <Stack width="100%" direction="row" spacing={2}>
             <TextField variant="outlined" fullWidth value={itemName} onChange={(e) => { setItemName(e.target.value) }} ></TextField>
